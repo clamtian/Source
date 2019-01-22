@@ -1,7 +1,11 @@
 package Class1;
 
 import java.util.Arrays;
-
+/**
+ * 给定一个数组，求如果排序之后，相邻两数的最大差值
+ *@author clam
+ *
+ */
 public class Code_11_MaxGap {
 
 	public static int maxGap(int[] nums) {

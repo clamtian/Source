@@ -1,7 +1,11 @@
 package Class1;
 
 public class Code_12_SmallSum {
-
+/**
+ * 在一个数组中，每一个数左边比当前数小的数累加起来，叫做这个数组的小和。求一个数组的小和。
+ * @param arr
+ * @return
+ */
 	public static int smallSum(int[] arr) {
 		if (arr == null || arr.length < 2) {
 			return 0;
