@@ -1,20 +1,19 @@
-package Class1;
+package Sort;
 
 import java.util.Arrays;
-public class Code_00_BubbleSort {
+
+public class Code_01_InsertionSort {
 	/**
-	 * 冒泡排序的实现
+	 * 插入排序的实现
 	 * @param arr
 	 */
-	public static void bubbleSort(int[] arr){
+	public static void insertionSort(int[] arr){
 		if(arr == null||arr.length < 2){
 			return;
 		}
-		for(int i = arr.length - 1;i > 0;i--){
-			for(int j = 0;j < i;j++){
-				if(arr[j] > arr[j + 1]){
-					swap(arr,j,j + 1);
-				}
+		for(int i = 1;i < arr.length;i++){
+			for(int j = i - 1;j >= 0&&arr[j] > arr[j + 1];j--){
+				swap(arr,j,j+ 1);
 			}
 		}
 	}
@@ -74,7 +73,7 @@ public class Code_00_BubbleSort {
 			System.out.println("The " + i + " is in the below");
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArr(arr1);
-			bubbleSort(arr1);
+			insertionSort(arr1);
 			comparator(arr2);
 			isSuccess = isEqual(arr1, arr2);
 			if(!isSuccess){

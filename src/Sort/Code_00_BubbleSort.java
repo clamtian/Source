@@ -1,44 +1,27 @@
-package Class1;
+package Sort;
 
 import java.util.Arrays;
-
-public class Code_05_MergeSort {
+public class Code_00_BubbleSort {
 	/**
-	 * 归并排序实现
+	 * 冒泡排序的实现
 	 * @param arr
 	 */
-	public static void mergeSort(int[] arr){
+	public static void bubbleSort(int[] arr){
 		if(arr == null||arr.length < 2){
 			return;
 		}
-		mergeSort(arr,0,arr.length - 1);
+		for(int i = arr.length - 1;i > 0;i--){
+			for(int j = 0;j < i;j++){
+				if(arr[j] > arr[j + 1]){
+					swap(arr,j,j + 1);
+				}
+			}
+		}
 	}
-	public static void mergeSort(int[] arr,int l,int r){
-		if(l == r){
-			return;
-		}
-		int mid = l + ((r - l) >> 1);
-		mergeSort(arr,l,mid);
-		mergeSort(arr,mid + 1,r);
-		merge(arr,l,mid,r);
-	}
-	public static void merge(int[] arr,int l,int mid,int r){
-		int[] help = new int[r - l + 1];
-		int i = l;
-		int j = mid + 1;
-		int k = 0;
-		while(i < mid + 1&&j < r + 1){
-			help[k++] = arr[i] > arr[j]?arr[j++]:arr[i++];
-		}
-		while(i < mid + 1){
-			help[k++] = arr[i++];
-		}
-		while(j < r + 1){
-			help[k++] = arr[j++];
-		}
-		for(i = 0;i < help.length;i++){
-			arr[l + i] = help[i];
-		}
+	public static void swap(int[] arr,int a,int b){
+		int index = arr[a];
+		arr[a] = arr[b];
+		arr[b] = index;
 	}
 	/*
 	 * 测试用
@@ -91,7 +74,7 @@ public class Code_05_MergeSort {
 			System.out.println("The " + i + " is in the below");
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArr(arr1);
-			mergeSort(arr1);
+			bubbleSort(arr1);
 			comparator(arr2);
 			isSuccess = isEqual(arr1, arr2);
 			if(!isSuccess){
@@ -100,5 +83,4 @@ public class Code_05_MergeSort {
 			}
 		}
 	}
-	
 }

@@ -1,45 +1,28 @@
-package Class1;
+package Sort;
 
 import java.util.Arrays;
 
-public class Code_04_QuickSort {
+public class Code_06_BucketSort {
 
-	public static void quickSort(int[] arr) {
+	// only for 0~200 value
+	public static void bucketSort(int[] arr) {
 		if (arr == null || arr.length < 2) {
 			return;
 		}
-		quickSort(arr, 0, arr.length - 1);
-	}
-
-	public static void quickSort(int[] arr, int l, int r) {
-		if (l < r) {
-			swap(arr, l + (int) (Math.random() * (r - l + 1)), r);
-			int[] p = partition(arr, l, r);
-			quickSort(arr, l, p[0] - 1);
-			quickSort(arr, p[1] + 1, r);
+		int max = Integer.MIN_VALUE;
+		for (int i = 0; i < arr.length; i++) {
+			max = Math.max(max, arr[i]);
 		}
-	}
-
-	public static int[] partition(int[] arr, int l, int r) {
-		int less = l - 1;
-		int more = r;
-		while (l < more) {
-			if (arr[l] < arr[r]) {
-				swap(arr, ++less, l++);
-			} else if (arr[l] > arr[r]) {
-				swap(arr, --more, l);
-			} else {
-				l++;
+		int[] bucket = new int[max + 1];
+		for (int i = 0; i < arr.length; i++) {
+			bucket[arr[i]]++;
+		}
+		int i = 0;
+		for (int j = 0; j < bucket.length; j++) {
+			while (bucket[j]-- > 0) {
+				arr[i++] = j;
 			}
 		}
-		swap(arr, more, r);
-		return new int[] { less + 1, more };
-	}
-
-	public static void swap(int[] arr, int i, int j) {
-		int tmp = arr[i];
-		arr[i] = arr[j];
-		arr[j] = tmp;
 	}
 
 	// for test
@@ -51,7 +34,7 @@ public class Code_04_QuickSort {
 	public static int[] generateRandomArray(int maxSize, int maxValue) {
 		int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
 		for (int i = 0; i < arr.length; i++) {
-			arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
+			arr[i] = (int) ((maxValue + 1) * Math.random());
 		}
 		return arr;
 	}
@@ -102,12 +85,12 @@ public class Code_04_QuickSort {
 	public static void main(String[] args) {
 		int testTime = 500000;
 		int maxSize = 100;
-		int maxValue = 100;
+		int maxValue = 150;
 		boolean succeed = true;
 		for (int i = 0; i < testTime; i++) {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
-			quickSort(arr1);
+			bucketSort(arr1);
 			comparator(arr2);
 			if (!isEqual(arr1, arr2)) {
 				succeed = false;
@@ -120,7 +103,7 @@ public class Code_04_QuickSort {
 
 		int[] arr = generateRandomArray(maxSize, maxValue);
 		printArray(arr);
-		quickSort(arr);
+		bucketSort(arr);
 		printArray(arr);
 
 	}

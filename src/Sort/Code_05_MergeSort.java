@@ -1,26 +1,44 @@
-package Class1;
+package Sort;
 
 import java.util.Arrays;
 
-public class Code_01_InsertionSort {
+public class Code_05_MergeSort {
 	/**
-	 * 插入排序的实现
+	 * 归并排序实现
 	 * @param arr
 	 */
-	public static void insertionSort(int[] arr){
+	public static void mergeSort(int[] arr){
 		if(arr == null||arr.length < 2){
 			return;
 		}
-		for(int i = 1;i < arr.length;i++){
-			for(int j = i - 1;j >= 0&&arr[j] > arr[j + 1];j--){
-				swap(arr,j,j+ 1);
-			}
-		}
+		mergeSort(arr,0,arr.length - 1);
 	}
-	public static void swap(int[] arr,int a,int b){
-		int index = arr[a];
-		arr[a] = arr[b];
-		arr[b] = index;
+	public static void mergeSort(int[] arr,int l,int r){
+		if(l == r){
+			return;
+		}
+		int mid = l + ((r - l) >> 1);
+		mergeSort(arr,l,mid);
+		mergeSort(arr,mid + 1,r);
+		merge(arr,l,mid,r);
+	}
+	public static void merge(int[] arr,int l,int mid,int r){
+		int[] help = new int[r - l + 1];
+		int i = l;
+		int j = mid + 1;
+		int k = 0;
+		while(i < mid + 1&&j < r + 1){
+			help[k++] = arr[i] > arr[j]?arr[j++]:arr[i++];
+		}
+		while(i < mid + 1){
+			help[k++] = arr[i++];
+		}
+		while(j < r + 1){
+			help[k++] = arr[j++];
+		}
+		for(i = 0;i < help.length;i++){
+			arr[l + i] = help[i];
+		}
 	}
 	/*
 	 * 测试用
@@ -73,7 +91,7 @@ public class Code_01_InsertionSort {
 			System.out.println("The " + i + " is in the below");
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArr(arr1);
-			insertionSort(arr1);
+			mergeSort(arr1);
 			comparator(arr2);
 			isSuccess = isEqual(arr1, arr2);
 			if(!isSuccess){
@@ -82,4 +100,5 @@ public class Code_01_InsertionSort {
 			}
 		}
 	}
+	
 }

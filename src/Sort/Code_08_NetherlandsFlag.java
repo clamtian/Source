@@ -1,4 +1,4 @@
-package Class1;
+package Sort;
 
 public class Code_08_NetherlandsFlag {
 /**

@@ -1,60 +1,50 @@
-package Class1;
+package Sort;
 
-public class Code_12_SmallSum {
-/**
- * 在一个数组中，每一个数左边比当前数小的数累加起来，叫做这个数组的小和。求一个数组的小和。
- * @param arr
- * @return
- */
-	public static int smallSum(int[] arr) {
+import java.util.Arrays;
+
+public class Code_04_QuickSort {
+
+	public static void quickSort(int[] arr) {
 		if (arr == null || arr.length < 2) {
-			return 0;
+			return;
 		}
-		return mergeSort(arr, 0, arr.length - 1);
+		quickSort(arr, 0, arr.length - 1);
 	}
 
-	public static int mergeSort(int[] arr, int l, int r) {
-		if (l == r) {
-			return 0;
+	public static void quickSort(int[] arr, int l, int r) {
+		if (l < r) {
+			swap(arr, l + (int) (Math.random() * (r - l + 1)), r);
+			int[] p = partition(arr, l, r);
+			quickSort(arr, l, p[0] - 1);
+			quickSort(arr, p[1] + 1, r);
 		}
-		int mid = l + ((r - l) >> 1);
-		return mergeSort(arr, l, mid) + mergeSort(arr, mid + 1, r) + merge(arr, l, mid, r);
 	}
 
-	public static int merge(int[] arr, int l, int m, int r) {
-		int[] help = new int[r - l + 1];
-		int i = 0;
-		int p1 = l;
-		int p2 = m + 1;
-		int res = 0;
-		while (p1 <= m && p2 <= r) {
-			res += arr[p1] < arr[p2] ? (r - p2 + 1) * arr[p1] : 0;
-			help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
+	public static int[] partition(int[] arr, int l, int r) {
+		int less = l - 1;
+		int more = r;
+		while (l < more) {
+			if (arr[l] < arr[r]) {
+				swap(arr, ++less, l++);
+			} else if (arr[l] > arr[r]) {
+				swap(arr, --more, l);
+			} else {
+				l++;
+			}
 		}
-		while (p1 <= m) {
-			help[i++] = arr[p1++];
-		}
-		while (p2 <= r) {
-			help[i++] = arr[p2++];
-		}
-		for (i = 0; i < help.length; i++) {
-			arr[l + i] = help[i];
-		}
-		return res;
+		swap(arr, more, r);
+		return new int[] { less + 1, more };
+	}
+
+	public static void swap(int[] arr, int i, int j) {
+		int tmp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = tmp;
 	}
 
 	// for test
-	public static int comparator(int[] arr) {
-		if (arr == null || arr.length < 2) {
-			return 0;
-		}
-		int res = 0;
-		for (int i = 1; i < arr.length; i++) {
-			for (int j = 0; j < i; j++) {
-				res += arr[j] < arr[i] ? arr[j] : 0;
-			}
-		}
-		return res;
+	public static void comparator(int[] arr) {
+		Arrays.sort(arr);
 	}
 
 	// for test
@@ -117,7 +107,9 @@ public class Code_12_SmallSum {
 		for (int i = 0; i < testTime; i++) {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
-			if (smallSum(arr1) != comparator(arr2)) {
+			quickSort(arr1);
+			comparator(arr2);
+			if (!isEqual(arr1, arr2)) {
 				succeed = false;
 				printArray(arr1);
 				printArray(arr2);
@@ -125,6 +117,12 @@ public class Code_12_SmallSum {
 			}
 		}
 		System.out.println(succeed ? "Nice!" : "Fucking fucked!");
+
+		int[] arr = generateRandomArray(maxSize, maxValue);
+		printArray(arr);
+		quickSort(arr);
+		printArray(arr);
+
 	}
 
 }
