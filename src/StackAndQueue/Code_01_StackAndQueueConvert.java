@@ -10,7 +10,7 @@ import java.util.Stack;
  *@author clam
  *
  */
-public class Code_03_StackAndQueueConvert {
+public class Code_01_StackAndQueueConvert {
 	public static class Stack2Queue{
 		private Stack<Integer> stackPush;
 		private Stack<Integer> stackPop;

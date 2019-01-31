@@ -7,7 +7,7 @@ import java.util.Stack;
  *@author clam
  *
  */
-public class Code_02_GetMinStack {
+public class Code_00_GetMinStack {
 	public static class GetMinStack{
 		private Stack<Integer> dataStack;
 		private Stack<Integer> minStack;

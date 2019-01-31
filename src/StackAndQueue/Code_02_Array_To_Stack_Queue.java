@@ -4,7 +4,7 @@ package StackAndQueue;
  *@author clam
  *
  */
-public class Code_01_Array_To_Stack_Queue {
+public class Code_02_Array_To_Stack_Queue {
 	/**
 	 * 用数组实现固定大小的栈
 	 *@author clam

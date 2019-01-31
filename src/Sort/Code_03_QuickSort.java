@@ -2,7 +2,7 @@ package Sort;
 
 import java.util.Arrays;
 
-public class Code_04_QuickSort {
+public class Code_03_QuickSort {
 
 	public static void quickSort(int[] arr) {
 		if (arr == null || arr.length < 2) {
