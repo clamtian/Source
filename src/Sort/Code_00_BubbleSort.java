@@ -18,10 +18,10 @@ public class Code_00_BubbleSort {
 			}
 		}
 	}
-	public static void swap(int[] arr,int a,int b){
-		int index = arr[a];
-		arr[a] = arr[b];
-		arr[b] = index;
+	public static void swap(int[] arr, int i, int j) {
+		arr[i] = arr[i] ^ arr[j];
+		arr[j] = arr[i] ^ arr[j];
+		arr[i] = arr[i] ^ arr[j];
 	}
 	/*
 	 * 测试用

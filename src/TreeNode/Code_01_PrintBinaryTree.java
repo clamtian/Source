@@ -1,16 +1,20 @@
 package TreeNode;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
+import TreeNode.Code_02_BinarySearchTree.Node;
+
 public class Code_01_PrintBinaryTree {
 
-	public static class Node {
-		public int value;
-		public Node left;
-		public Node right;
-
-		public Node(int data) {
-			this.value = data;
-		}
-	}
+//	public static class Node {
+//		public int val;
+//		public Node leftNode;
+//		public Node rightNode;
+//
+//		public Node(int data) {
+//			this.val = data;
+//		}
+//	}
 
 	public static void printTree(Node head) {
 		System.out.println("Binary Tree:");
@@ -22,14 +26,14 @@ public class Code_01_PrintBinaryTree {
 		if (head == null) {
 			return;
 		}
-		printInOrder(head.right, height + 1, "v", len);
-		String val = to + head.value + to;
+		printInOrder(head.rightNode, height + 1, "v", len);
+		String val = to + head.val + to;
 		int lenM = val.length();
 		int lenL = (len - lenM) / 2;
 		int lenR = len - lenM - lenL;
 		val = getSpace(lenL) + val + getSpace(lenR);
 		System.out.println(getSpace(height * len) + val);
-		printInOrder(head.left, height + 1, "^", len);
+		printInOrder(head.leftNode, height + 1, "^", len);
 	}
 
 	public static String getSpace(int num) {
@@ -42,33 +46,30 @@ public class Code_01_PrintBinaryTree {
 	}
 
 	public static void main(String[] args) {
-		Node head = new Node(1);
-		head.left = new Node(-222222222);
-		head.right = new Node(3);
-		head.left.left = new Node(Integer.MIN_VALUE);
-		head.right.left = new Node(55555555);
-		head.right.right = new Node(66);
-		head.left.left.right = new Node(777);
-		printTree(head);
-
-		head = new Node(1);
-		head.left = new Node(2);
-		head.right = new Node(3);
-		head.left.left = new Node(4);
-		head.right.left = new Node(5);
-		head.right.right = new Node(6);
-		head.left.left.right = new Node(7);
-		printTree(head);
-
-		head = new Node(1);
-		head.left = new Node(1);
-		head.right = new Node(1);
-		head.left.left = new Node(1);
-		head.right.left = new Node(1);
-		head.right.right = new Node(1);
-		head.left.left.right = new Node(1);
-		printTree(head);
-
+		Code_02_BinarySearchTree b = new Code_02_BinarySearchTree();
+		b.put(10);
+		b.put(-5);
+		printTree(b.root);
+		b.put(-8);
+		printTree(b.root);
+		b.put(4);
+		printTree(b.root);
+		b.put(81);
+		printTree(b.root);
+		b.put(7);
+		printTree(b.root);
+		b.put(93);
+		printTree(b.root);
+		b.put(7);
+		printTree(b.root);
+		b.put(-1);
+		printTree(b.root);
+		b.delete(93);
+		printTree(b.root);
+		b.delete(-5);
+		printTree(b.root);
+		b.delete(4);
+		printTree(b.root);
 	}
 
 }
