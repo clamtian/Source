@@ -1,6 +1,5 @@
 package TreeNode;
 
-import TreeNode.Code_02_BinarySearchTree.Node;
 
 /**
  * 实现红黑树
@@ -140,6 +139,165 @@ public class Code_03_RedBlackTree <K extends Comparable<K>, V>{
 		leftRotation(grandfather);
 	}
 	/**
+	 * 删除节点
+	 * @param node
+	 */
+	public boolean delete(K key){
+		if(key != null){
+			if(root != null){
+				return deleteNode(key, root, null);
+			}
+		}
+		return false;
+	}
+	
+	private boolean deleteNode(K key, Node current, Node parent){
+		if(current != null){
+			if(current.key.compareTo(key) > 0){
+				return deleteNode(key, current.leftNode, current);
+			}else if(current.key.compareTo(key) < 0){
+				return deleteNode(key, current.rightNode, current);
+			}else{
+				if(current.leftNode != null && current.rightNode != null){
+					del2ChildrenNode(current);
+				}else if(current.leftNode == null && current.rightNode == null){
+					deleteLeafFix(current);
+					if(current.key.compareTo(parent.key) > 0){
+						parent.rightNode = null;
+					}else{
+						parent.leftNode = null;
+					}
+				}else{
+					delOneChildNode(current);
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void delOneChildNode(Node delNode){
+		Node replaceNode = (null == delNode.leftNode) ? delNode.rightNode : delNode.leftNode;
+		deltetLeafNode(delNode, replaceNode);
+	}
+	
+	private void del2ChildrenNode(Node target){
+		Node replaceNode = successor(target);
+		if((null == replaceNode.rightNode) && (null == replaceNode.leftNode)){
+			deltetLeafNode(target, replaceNode);
+		}else{
+			target.key = replaceNode.key;
+			target.value = replaceNode.value;
+			delOneChildNode(replaceNode);
+		}
+	}
+	
+	private void deltetLeafNode(Node target, Node replaceNode){
+		target.key = replaceNode.key;
+		target.value = replaceNode.value;
+		deleteLeafFix(replaceNode);
+		if(replaceNode == replaceNode.parentNode.rightNode){
+			replaceNode.parentNode.rightNode = null;
+		}else{
+			replaceNode.parentNode.leftNode = null;
+		}
+	}
+	
+	//找后继结点。即，查找"红黑树中数据值大于该结点"的"最小结点"
+		private Node successor(Node node) {
+	        if (node == null){
+	        	return null;
+	        }
+	        if (null != node.rightNode) { // 获取 后继节点
+	        	Node p = node.rightNode;
+	            while (null != p.leftNode){
+	            	 p = p.leftNode;
+	            }
+	            return p;
+	        } else {
+	        	Node p = node.parentNode;
+	        	Node ch = node;
+	            while (p != null && ch == p.rightNode) {
+	                ch = p;
+	                p = p.parentNode;
+	            }
+	            return p;
+	        }
+	    }
+	
+	
+	private void deleteLeafFix(Node deleteNode){
+		while(deleteNode != root && deleteNode.color == BLACK){
+			Node parent = deleteNode.parentNode;
+			Node brother = getBrother(deleteNode);
+			if(deleteNode.key.compareTo(parent.key) > 0){//删除的是右叶子节点
+				if(RED == brother.color){ //case5：该兄弟节点是红色的
+					brother.color = BLACK;
+					brother.rightNode.color = RED;
+					rightRotation(parent);
+					break;
+				}else{
+					if(brother.rightNode == null && brother.leftNode == null){
+						//兄弟节点 是黑色 且没有子节点
+						brother.color = RED;
+						deleteNode = parent;
+					}else{
+						if(brother.leftNode != null && brother.leftNode.color == RED){
+							brother.color = parent.color;
+							parent.color = BLACK;
+							rightRotation(parent);
+							break;
+						}else{
+							brother.rightNode.color = BLACK;
+							brother.color = RED;
+							leftRotation(brother);
+						}
+					}
+				}
+			}else{
+				if(brother.color == RED){
+					brother.color = BLACK;
+					brother.leftNode.color = RED;
+					leftRotation(parent);
+					break;
+				}else{
+					if((null == brother.leftNode) && (null == brother.rightNode)){ // case4: 兄弟节点是黑色的，且没有子节点
+						brother.color = RED; // 将兄弟节点设为红色，将父节点设为当前节点递归， 直到根节点，或遇到红色节点，
+						deleteNode = parent;
+					}else{
+						if((null != brother.rightNode) && (RED == brother.rightNode.color)){ // case1 : 兄弟节点是黑色的，且有一个右节点（可以断定 右节点是红色的）
+							// case3 : 兄弟节点是黑色的，且有两个节点（可以断定 左右节点都是红色的） 这个和情况 1 是一样的
+							brother.color = parent.color;
+							parent.color = BLACK;
+							brother.rightNode.color = BLACK;
+							leftRotation(parent);
+							break;
+						}else{ // case2: 兄弟节点是黑色的，且有一个左节点（可以断定 左节点是红色的）
+							brother.leftNode.color = BLACK;
+							brother.color = RED;
+							rightRotation(brother);
+						}
+					}
+				}
+			}
+		}
+		deleteNode.color = BLACK;
+	}
+	private Node getBrother(Node node){
+		if(null == node){
+			return null;
+		}
+		Node parent = node.parentNode;
+		if(null == parent){
+			return null;
+		}
+		if(node.key.compareTo(parent.key) > 0){
+			return parent.leftNode;
+		}else{
+			return parent.rightNode;
+		}
+	}
+	/**
 	 * 左旋转
 	 * @param h
 	 */
@@ -253,8 +411,31 @@ public static void main(String[] args) {
 		bst.put(66, "66");
 		bst.printTree(bst.root);
 		bst.put(61, "61");
-		
-		
 		bst.printTree(bst.root);
+		
+		
+		// 当前节点是左节点 的 5中情况
+		bst.delete(15); // 1. 兄弟节点是黑色的，且有一个右节点（可以断定 右节点是红色的）
+
+		bst.printTree(bst.root);
+		// 2. 兄弟节点是黑色的，且有一个左节点（可以断定 左节点是红色的
+		bst.put(140, "v140");
+
+		bst.printTree(bst.root);
+		
+		bst.delete(95); 
+
+		bst.printTree(bst.root);
+		// 4. 兄弟节点是黑色的，且没有子节点
+		bst.delete(66); 
+
+		bst.printTree(bst.root);
+		//5. 如果该兄弟节点是红色的，那么根据红黑树的特性可以得出它的一定有两个黑色的子节点
+		bst.delete(95);
+		bst.printTree(bst.root);
+		bst.delete(15);
+		bst.printTree(bst.root);
+		
+		
 	}
 }
