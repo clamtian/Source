@@ -27,16 +27,6 @@ public class Code_03_RedBlackTree <K extends Comparable<K>, V>{
 			this.color = color;
 			this.parentNode = parentNode;
 		}
-		
-		@Override
-		public String toString(){
-			return "{"
-					+ "\"key\":" + this.key + ", "
-					+ "\"value\":" + "\"" + this.value + "\"" + ", "
-					+ "\"color\":" + this.color + ", "
-					+ "\"leftNode\":" + this.leftNode + ","
-					+ "\"rightNode\":" + this.rightNode + "}";
-		}
 	}
 	
 	public Node root;
@@ -203,7 +193,7 @@ public class Code_03_RedBlackTree <K extends Comparable<K>, V>{
 		}
 	}
 	
-	//找后继结点。即，查找"红黑树中数据值大于该结点"的"最小结点"
+	//找后继结点。即查找"红黑树中数据值大于该结点的最小结点"
 		private Node successor(Node node) {
 	        if (node == null){
 	        	return null;
@@ -344,7 +334,6 @@ public class Code_03_RedBlackTree <K extends Comparable<K>, V>{
 				m.parentNode.leftNode = h;
 			}
 		}
-		
 		m.parentNode = h;
 		h.rightNode = m;
 	}
@@ -435,7 +424,5 @@ public static void main(String[] args) {
 		bst.printTree(bst.root);
 		bst.delete(15);
 		bst.printTree(bst.root);
-		
-		
 	}
 }
